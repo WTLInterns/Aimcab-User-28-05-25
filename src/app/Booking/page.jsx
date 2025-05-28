@@ -53,7 +53,7 @@ function BookingContent() {
       const updatedCars = await Promise.all(
         cars.map(async (car) => {
           try {
-            const res = await axios.get("https://api.aimcab.com/api/booking/getBaseAmount", {
+            const res = await axios.get("http://localhost:5000/api/booking/getBaseAmount", {
               params: {
                 user_trip_type: user_trip_type.trim(),
                 user_pickup: user_pickup.trim(),
@@ -88,7 +88,7 @@ function BookingContent() {
 
     try {
       const res = await axios.put(
-        `https://api.aimcab.com/api/booking/update-booking?bookingId=${encodeURIComponent(bookingId)}`,
+        `http://localhost:5000/api/booking/update-booking?bookingId=${encodeURIComponent(bookingId)}`,
         {
           carType: car.name.toLowerCase(),
         }

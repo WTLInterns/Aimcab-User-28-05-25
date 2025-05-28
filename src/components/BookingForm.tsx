@@ -66,7 +66,7 @@ const BookingForm = () => {
     const visitor = { ...formData, bookingId: id };
   
     try {
-      const response = await fetch("https://api.aimcab.com/api/booking/create-booking", {
+      const response = await fetch("http://localhost:5000/api/booking/create-booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(visitor),
@@ -285,7 +285,7 @@ const BookingForm = () => {
                 <input
                   type="text"
                   name="name"
-                  placeholder="Your Name"
+                  placeholder="Name"
                   value={formData.name}
                   onChange={handleChange}
                   className="w-full p-3 bg-[#0F0E0E]/80 text-white border-2 border-[#F3B664] rounded-lg"
@@ -294,7 +294,7 @@ const BookingForm = () => {
                 <input
                   type="tel"
                   name="phone"
-                  placeholder="Your Phone Number"
+                  placeholder="Phone No."
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full p-3 bg-[#0F0E0E]/80 text-white border-2 border-[#F3B664] rounded-lg"
@@ -303,7 +303,7 @@ const BookingForm = () => {
                 <input
                   type="email"
                   name="email"
-                  placeholder="Your Email ID"
+                  placeholder="Email"
                   value={formData.email}
                   onChange={handleChange}
                   className="w-full p-3 bg-[#0F0E0E]/80 text-white border-2 border-[#F3B664] rounded-lg"
