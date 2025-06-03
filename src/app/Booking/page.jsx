@@ -6,6 +6,8 @@ import Footer from "../../container/component/Footer"
 import Navbar from "../../container/component/Navbar"
 import axios from "axios"
 import { useSearchParams } from "next/navigation"
+import { MdLocationOn } from 'react-icons/md';
+import { FaArrowRight, FaClock } from 'react-icons/fa';
 
 function BookingContent() {
   const route = useRouter()
@@ -63,7 +65,8 @@ function BookingContent() {
                 car: car.name.toLowerCase().trim(),
               },
             })
-            return { ...car, price: res.data.baseAmount }
+            console.log("res", res)
+            return { ...car, price: res.data.baseAmount, distance: res.data.distance }
           } catch (err) {
             console.error(`Error fetching price for ${car.name}:`, err.message)
             return { ...car, price: 0 }
@@ -78,7 +81,7 @@ function BookingContent() {
 
   const handleBookNow = async (car, index) => {
     const bookingId = searchParams.get("bookingId") || localStorage.getItem("bookid");
-    
+
     if (!bookingId) {
       alert("Missing booking ID");
       return;
@@ -179,8 +182,42 @@ function BookingContent() {
                                 <p className="text-sm text-gray-700">{facility.name}</p>
                               </li>
                             ))}
+
+                            {/* Distance */}
+                            <li className="flex items-center space-x-2">
+                              <div className="w-7 h-7 rounded-full bg-yellow-50 flex items-center justify-center flex-shrink-0">
+                                <MdLocationOn size={20} color="#ffbd33" />
+                              </div>
+                              <p className="text-sm text-gray-700 font-bold">
+                                Distance: <div className="font-medium mt-2">{car.distance}</div>
+                              </p>
+                            </li>
+
+
+                            {/* Fuel Type */}
+                            <li className="flex items-center space-x-2">
+                              <div className="w-7 h-7 rounded-full bg-yellow-50 flex items-center justify-center flex-shrink-0">
+                                <FaArrowRight size={20} color="#ffbd33" />
+                              </div>
+                              <p className="text-sm text-gray-700 font-bold">
+                                Fuel Type: <div className="font-medium mt-2">CNG with refill breaks</div>
+                              </p>
+                            </li>
+
+
+                            {/* Duration */}
+                            <li className="flex items-center space-x-2">
+                              <div className="w-7 h-7 rounded-full bg-yellow-50 flex items-center justify-center flex-shrink-0">
+                                <FaClock size={20} color="#ffbd33" />
+                              </div>
+                              <p className="text-sm text-gray-900 font-bold">
+                                Duration: <div className="font-medium  mt-2">24 Hours Rental</div>
+                              </p>
+                            </li>
+
                           </ul>
                         </div>
+
                       </div>
 
                       <div className="mt-8 pt-4 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

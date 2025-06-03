@@ -59,46 +59,46 @@ const BookingForm = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
     setLoading(true)
-  
+
     const id = "AIM" + new Date().getTime()
     localStorage.setItem("bookid", id)
-  
+
     const visitor = { ...formData, bookingId: id };
-  
+
     try {
       const response = await fetch("https://api.aimcab.com/api/booking/create-booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(visitor),
       })
-  
+
       // ✅ Wait for the JSON body
       const data = await response.json()
-      console.log("----------",data.booking)
-  
+      console.log("----------", data.booking)
+
       if (!response.ok) {
         console.error("Booking creation failed:", {
           status: response.status,
           statusText: response.statusText,
           error: data,
         });
-  
+
         if (data.message?.includes("car type")) {
           throw new Error("Please select a valid car type for your booking");
         }
-  
+
         throw new Error(data.message || `Failed to create booking: ${response.statusText}`);
       }
-  
+
       console.log("📦 Booking created:", data)
       console.log("📄 Booking ID from response:", data.bookingId) // ✅ This will now work
-  
+
       localStorage.setItem("trip", JSON.stringify(visitor))
-  
+
       router.push(
         `/Booking?tripType=${encodeURIComponent(formData.user_trip_type)}&pickup=${encodeURIComponent(formData.user_pickup)}&drop=${encodeURIComponent(formData.user_drop)}&date=${encodeURIComponent(formData.date)}&return_date=${encodeURIComponent(formData.return_date)}&bookingId=${encodeURIComponent(id)}`
       );
-  
+
     } catch (error) {
       console.error("Error creating booking:", error);
       alert(error instanceof Error ? error.message : "Something went wrong while creating the booking.");
@@ -106,22 +106,35 @@ const BookingForm = () => {
       setLoading(false)
     }
   }
-  
+
+  // Add this function to your component
+  const handleClick = (e) => {
+    e.target.showPicker?.();
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+
+    if (value.length <= 10) {
+      setFormData((prev) => ({ ...prev, phone: value }));
+    }
+  };
+
 
 
   return (
-    
+
     <div className="relative z-10 top-12 w-full flex flex-col lg:flex-row p-0 m-0 min-h-screen">
-      
+
       {/* Promo Section */}
       <div className="w-full lg:w-1/2 bg-transparent">
-      <div 
-      className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
-      style={{ backgroundImage: 'url("/images/frontcar.jpg")' }}
-    >
-      <div className="absolute inset-0 bg-black opacity-30"></div>
-      
-    </div>
+        <div
+          className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
+          style={{ backgroundImage: 'url("/images/frontcar.jpg")' }}
+        >
+          <div className="absolute inset-0 bg-black opacity-30"></div>
+
+        </div>
         <div className="carousel slide h-full">
           <div className="carousel-inner relative h-full">
             <div className="carousel-item active h-full">
@@ -210,7 +223,7 @@ const BookingForm = () => {
 
               {/* Date & Time */}
               <div className="grid  grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                <div >
                   <label className="block  text-white text-sm font-medium mb-2">Pickup Date</label>
                   <input
                     className="w-full p-3 cursor-pointer bg-[#0F0E0E]/80 text-white border-2 border-[#F3B664] rounded-lg focus:ring-2 focus:ring-[#F3B664] focus:border-[#F3B664]"
@@ -218,6 +231,9 @@ const BookingForm = () => {
                     type="date"
                     value={formData.date}
                     onChange={handleChange}
+                    onClick={handleClick}
+                    onFocus={handleClick}
+                    min={new Date().toISOString().split('T')[0]} // Prevents past dates
                     required
                   />
                 </div>
@@ -229,6 +245,8 @@ const BookingForm = () => {
                     name="time"
                     value={formData.time}
                     onChange={handleChange}
+                    onClick={handleClick}
+                    onFocus={handleClick}
                     required
                   />
                 </div>
@@ -240,11 +258,13 @@ const BookingForm = () => {
                   <div>
                     <label className="block text-white text-sm font-medium mb-2">Return Date</label>
                     <input
-                      className="w-full p-3 bg-[#0F0E0E]/80 text-white border-2 border-[#F3B664] rounded-lg focus:ring-2 focus:ring-[#F3B664] focus:border-[#F3B664]"
+                      className="w-full p-3 bg-[#0F0E0E]/80 text-white cursor-pointer border-2 border-[#F3B664] rounded-lg focus:ring-2 focus:ring-[#F3B664] focus:border-[#F3B664]"
                       type="date"
                       name="return_date"
                       value={formData.return_date}
                       onChange={handleChange}
+                      onClick={handleClick}
+                      onFocus={handleClick}
                       required
                     />
                   </div>
@@ -252,11 +272,13 @@ const BookingForm = () => {
                     <label className="block text-white text-sm font-medium mb-2">Return Time</label>
 
                     <input
-                      className="w-full p-3 bg-[#0F0E0E]/80 text-white border-2 border-[#F3B664] rounded-lg focus:ring-2 focus:ring-[#F3B664] focus:border-[#F3B664]"
+                      className="w-full p-3 bg-[#0F0E0E]/80 text-white border-2 cursor-pointer border-[#F3B664] rounded-lg focus:ring-2 focus:ring-[#F3B664] focus:border-[#F3B664]"
                       type="time"
                       name="time_end"
                       value={formData.time_end}
                       onChange={handleChange}
+                      onClick={handleClick}
+                      onFocus={handleClick}
                       required
                     />
                   </div>
@@ -296,7 +318,8 @@ const BookingForm = () => {
                   name="phone"
                   placeholder="Phone No."
                   value={formData.phone}
-                  onChange={handleChange}
+                  // onChange={handleChange}
+                  onChange={handlePhoneChange}
                   className="w-full p-3 bg-[#0F0E0E]/80 text-white border-2 border-[#F3B664] rounded-lg"
                   required
                 />

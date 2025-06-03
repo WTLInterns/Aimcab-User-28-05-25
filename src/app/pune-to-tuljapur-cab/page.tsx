@@ -397,11 +397,11 @@ const page = () => {
                   DESIGNED BY
                 </h4>
                 <a
-                  href="https://cobaztech.com"
+                  href="info@webutsav.com"
                   target="_blank"
                   className="text-white transition-all duration-300 ease-in-out font-semibold block mt-1 hover:text-black hover:scale-105"
                 >
-                  COBAZTECH
+                  COBAZTE
                 </a>
               </div>
 

@@ -576,7 +576,7 @@
 //               className="text-white transition-all duration-300 ease-in-out font-semibold block mt-2 hover:text-sky-200 hover:scale-105"
 //               rel="noreferrer"
 //             >
-//               COBAZTECH
+//               https://api.aimcab.com
 //             </a>
 //           </div>
 

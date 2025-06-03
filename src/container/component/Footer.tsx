@@ -82,7 +82,7 @@ export default function Footer() {
               <li className="flex items-center">
                 <Mail className="mr-3 h-5 w-5 text-red-500 flex-shrink-0" />
                 <a href="mailto:aimcabhelp@gmail.com" className="hover:text-white transition-colors">
-                  aimcabhelp@gmail.com
+                  info@webutsav.com
                 </a>
               </li>
               <li className="flex items-center">
@@ -94,12 +94,12 @@ export default function Footer() {
               <li className="flex items-center">
                 <Globe className="mr-3 h-5 w-5 text-red-500 flex-shrink-0" />
                 <a
-                  href="https://aimcab.com/"
+                  href="https://webutsav.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
                 >
-                  aimcab.com
+                webutsav.com
                 </a>
               </li>
             </ul>
@@ -109,16 +109,16 @@ export default function Footer() {
         {/* Copyright */}
         <div className="border-t border-slate-700 mt-12 pt-6 text-center">
           <li> Designed by <a
-                  href="https://cobaztech.com/"
+                  href="https://webutsav.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white text-[#f5e537] transition-colors"
                 >
-                cobaztech.com
+                Webutsav.com
                 </a></li>
         </div>
         <div className="border-slate-700 pt-6 text-center">
-          <p>© {new Date().getFullYear()} cobaztech.com All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Webutsav.com All rights reserved.</p>
         </div>
       </div>
     </footer>
