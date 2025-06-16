@@ -118,7 +118,7 @@ const BookingForm = () => {
 
     try {
       // STEP 1: Check if pickup/drop exists in DB/Excel via /api/check-route
-      const checkRouteResponse = await fetch("http://localhost:5000/api/booking/check-location", {
+      const checkRouteResponse = await fetch("https://api.aimcab.com/api/booking/check-location", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -139,7 +139,7 @@ const BookingForm = () => {
       }
 
       // ✅ STEP 2: Route is available → proceed with booking
-      const bookingResponse = await fetch("http://localhost:5000/api/booking/create-booking", {
+      const bookingResponse = await fetch("https://api.aimcab.com/api/booking/create-booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(visitor),

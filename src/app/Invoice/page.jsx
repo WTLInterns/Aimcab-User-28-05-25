@@ -58,7 +58,7 @@ const InvoicePage = () => {
     }
 
     try {
-      const res = await axios.get("http://localhost:5000/api/booking/get-invoice-details", {
+      const res = await axios.get("https://api.aimcab.com/api/booking/get-invoice-details", {
         params: { bookingId, car: selectedCarType }
       })
 
