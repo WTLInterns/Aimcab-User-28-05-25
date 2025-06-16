@@ -23,7 +23,7 @@ const BookingForm = () => {
     email: "",
     distance: "",
     baseAmount: "",
-    car: "Sedan",
+    carType: "sedan",
     price_details: "",
   })
 
@@ -56,56 +56,129 @@ const BookingForm = () => {
     }
   };
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    setLoading(true)
+  // const handleSubmit = async (e: any) => {
+  //   e.preventDefault()
+  //   setLoading(true)
 
-    const id = "AIM" + new Date().getTime()
-    localStorage.setItem("bookid", id)
+  //   const id = "AIM" + new Date().getTime()
+  //   localStorage.setItem("bookid", id)
+
+  //   const visitor = { ...formData, bookingId: id };
+
+  //   try {
+  //     const response = await fetch("http://localhost:5000/api/booking/create-booking", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(visitor),
+  //     })
+
+  //     // ✅ Wait for the JSON body
+  //     const data = await response.json()
+  //     console.log("----------", data.booking)
+
+  //     if (!response.ok) {
+  //       console.error("Booking creation failed:", {
+  //         status: response.status,
+  //         statusText: response.statusText,
+  //         error: data,
+  //       });
+
+  //       if (data.message?.includes("car type")) {
+  //         throw new Error("Please select a valid car type for your booking");
+  //       }
+
+  //       throw new Error(data.message || `Failed to create booking: ${response.statusText}`);
+  //     }
+
+  //     console.log("📦 Booking created:", data)
+  //     console.log("📄 Booking ID from response:", data.bookingId) // ✅ This will now work
+
+  //     localStorage.setItem("trip", JSON.stringify(visitor))
+
+  //     router.push(
+  //       `/Booking?tripType=${encodeURIComponent(formData.user_trip_type)}&pickup=${encodeURIComponent(formData.user_pickup)}&drop=${encodeURIComponent(formData.user_drop)}&date=${encodeURIComponent(formData.date)}&return_date=${encodeURIComponent(formData.return_date)}&bookingId=${encodeURIComponent(id)}`
+  //     );
+
+  //   } catch (error) {
+  //     console.error("Error creating booking:", error);
+  //     alert(error instanceof Error ? error.message : "Something went wrong while creating the booking.");
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const id = "AIM" + new Date().getTime();
+    localStorage.setItem("bookid", id);
 
     const visitor = { ...formData, bookingId: id };
 
     try {
-      const response = await fetch("https://api.aimcab.com/api/booking/create-booking", {
+      // STEP 1: Check if pickup/drop exists in DB/Excel via /api/check-route
+      const checkRouteResponse = await fetch("http://localhost:5000/api/booking/check-location", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pickupLocation: formData.user_pickup,
+          dropLocation: formData.user_drop,
+        }),
+      });
+
+
+
+      const checkRouteData = await checkRouteResponse.json();
+      const { pickupValid, dropValid } = checkRouteData.data || {};
+
+      if (!pickupValid && !dropValid) {
+        // 🚫 Route not available, redirect to /no-cab page
+        router.push("/no-cab");
+        return;
+      }
+
+      // ✅ STEP 2: Route is available → proceed with booking
+      const bookingResponse = await fetch("http://localhost:5000/api/booking/create-booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(visitor),
-      })
+      });
 
-      // ✅ Wait for the JSON body
-      const data = await response.json()
-      console.log("----------", data.booking)
+      const bookingData = await bookingResponse.json();
 
-      if (!response.ok) {
+      if (!bookingResponse.ok) {
         console.error("Booking creation failed:", {
-          status: response.status,
-          statusText: response.statusText,
-          error: data,
+          status: bookingResponse.status,
+          statusText: bookingResponse.statusText,
+          error: bookingData,
         });
 
-        if (data.message?.includes("car type")) {
+        if (bookingData.message?.includes("car type")) {
           throw new Error("Please select a valid car type for your booking");
         }
 
-        throw new Error(data.message || `Failed to create booking: ${response.statusText}`);
+        throw new Error(bookingData.message || `Failed to create booking: ${bookingResponse.statusText}`);
       }
 
-      console.log("📦 Booking created:", data)
-      console.log("📄 Booking ID from response:", data.bookingId) // ✅ This will now work
-
-      localStorage.setItem("trip", JSON.stringify(visitor))
+      // ✅ Booking created successfully
+      console.log("📦 Booking created:", bookingData);
+      localStorage.setItem("trip", JSON.stringify(visitor));
 
       router.push(
         `/Booking?tripType=${encodeURIComponent(formData.user_trip_type)}&pickup=${encodeURIComponent(formData.user_pickup)}&drop=${encodeURIComponent(formData.user_drop)}&date=${encodeURIComponent(formData.date)}&return_date=${encodeURIComponent(formData.return_date)}&bookingId=${encodeURIComponent(id)}`
       );
-
     } catch (error) {
-      console.error("Error creating booking:", error);
-      alert(error instanceof Error ? error.message : "Something went wrong while creating the booking.");
+      console.error("Error in booking process:", error);
+      alert(error instanceof Error ? error.message : "Something went wrong.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+
+  console.log("🚗 Submitting booking with carType:", formData.carType);
+
 
   // Add this function to your component
   const handleClick = (e) => {
