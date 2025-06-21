@@ -3,8 +3,11 @@ import { motion } from 'framer-motion';
 import { FaCar, FaShieldAlt, FaWallet, FaHeadset, FaMapMarkerAlt, FaClock, FaThumbsUp } from 'react-icons/fa';
 import Navbar from '../../container/component/Navbar';
 import Footer from '../../container/component/Footer';
+import { useRouter } from "next/navigation"
 
 const AboutSection = () => {
+    const router = useRouter()
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
@@ -30,6 +33,11 @@ const AboutSection = () => {
     { icon: <FaThumbsUp className="text-2xl" />, text: "Verified drivers" }
   ];
 
+  const handleClick = () => {
+    router.push('#services'); // ✅ This is correct
+  };
+
+ 
   return (
     <div className="relative">
       {/* Navbar should be outside the section with background image */}
@@ -115,7 +123,7 @@ const AboutSection = () => {
                 </div>
                 
                 <motion.a
-                  href="/book"
+                  href="/"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-full py-3 bg-[#2B2B2B] text-[#D5D5D5] font-semibold rounded-lg duration-300 border-2 border-[#F3B664]  text-center block hover:bg-[#0F0E0E] hover:text-[#F3B664] transition-all"
@@ -156,8 +164,10 @@ const AboutSection = () => {
                     <div className="w-full border-t border-gray-300/50"></div>
                   </div>
                   <div className="relative flex justify-center">
+                    
                     <motion.a
-                      href="/services"
+                      // href="#services"
+                      onClick={handleClick}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className="w-full py-3 bg-[#2B2B2B] text-[#D5D5D5] font-semibold rounded-lg duration-300 border-2 border-[#F3B664]  text-center block hover:bg-[#0F0E0E] hover:text-[#F3B664] transition-all"

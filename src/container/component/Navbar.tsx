@@ -91,12 +91,7 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-10 font-semibold items-center">
-          <a 
-            href="tel:9130030054" 
-            className="text-lg transition-all duration-300 transform hover:scale-105 hover:translate-y-[-2px] flex items-center gap-2 text-white hover:text-yellow-400"
-          >
-            <i className="fas fa-phone-alt fa-lg"></i> Call Us
-          </a>
+        
           
           {navItems.map((item) => (
             <Link
@@ -118,6 +113,12 @@ export default function Navbar() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full bg-yellow-400"></span>
             </Link>
           ))}
+            <a 
+          href="/Callus"
+            className="text-lg transition-all duration-300 transform hover:scale-105 hover:translate-y-[-2px] flex items-center gap-2 text-white hover:text-yellow-400"
+          >
+            <i className="fas fa-phone-alt fa-lg"></i> Call Us
+          </a>
         </div>
 
         {/* Mobile menu button */}

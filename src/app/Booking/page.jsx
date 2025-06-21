@@ -55,7 +55,7 @@ function BookingContent() {
       const updatedCars = await Promise.all(
         cars.map(async (car) => {
           try {
-            const res = await axios.get("https://api.aimcab.com/api/booking/getBaseAmount", {
+            const res = await axios.get("http://localhost:5000/api/booking/getBaseAmount", {
               params: {
                 user_trip_type: user_trip_type.trim(),
                 user_pickup: user_pickup.trim(),
@@ -91,7 +91,7 @@ function BookingContent() {
 
     try {
       const res = await axios.put(
-        `https://api.aimcab.com/api/booking/update-booking?bookingId=${encodeURIComponent(bookingId)}`,
+        `http://localhost:5000/api/booking/update-booking?bookingId=${encodeURIComponent(bookingId)}`,
         {
           carType: car.name.toLowerCase(),
         }
@@ -188,8 +188,16 @@ function BookingContent() {
                               <div className="w-7 h-7 rounded-full bg-yellow-50 flex items-center justify-center flex-shrink-0">
                                 <MdLocationOn size={20} color="#ffbd33" />
                               </div>
+                              {/* <p className="text-sm text-gray-700 font-bold">
+                                Distance: <div className="font-medium mt-2">{car.distance * 2}</div>
+                              </p> */}
                               <p className="text-sm text-gray-700 font-bold">
-                                Distance: <div className="font-medium mt-2">{car.distance}</div>
+                                Distance:
+                                <div className="font-medium mt-2">
+                                  {user_trip_type?.toLowerCase() === "round trip"
+                                    ? `${car.distance * 2} km`
+                                    : `${car.distance} km`}
+                                </div>
                               </p>
                             </li>
 

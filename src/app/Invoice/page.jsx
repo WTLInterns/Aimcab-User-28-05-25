@@ -58,10 +58,11 @@ const InvoicePage = () => {
     }
 
     try {
-      const res = await axios.get("https://api.aimcab.com/api/booking/get-invoice-details", {
+      const res = await axios.get("http://localhost:5000/api/booking/get-invoice-details", {
         params: { bookingId, car: selectedCarType }
       })
 
+      console.log("res.data",res.data)
       setInvoiceDetails(res.data)
     } catch (error) {
       console.error("Failed to fetch invoice details:", error)
@@ -79,7 +80,7 @@ const InvoicePage = () => {
         return;
       }
   
-      const response = await fetch('https://api.aimcab.com/api/booking/update-invoice-details', {
+      const response = await fetch('http://localhost:5000/api/booking/update-invoice-details', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,7 +200,12 @@ const InvoicePage = () => {
                     )}
                     <div>
                       <p className="text-gray-600 text-sm">Distance:</p>
-                      <p className="font-medium">{invoiceDetails?.distance || "Loading..."}</p>
+                      {/* <p className="font-medium">{invoiceDetails?.distance * 2 || "Loading..."}</p> */}
+                  <p className="font-medium">
+  {invoiceDetails?.trip_type?.toLowerCase().trim() === "round trip"
+    ? `${invoiceDetails?.distance * 2} km`
+    : `${invoiceDetails?.distance} km`}
+</p>
                     </div>
                   </div>
                 </div>
